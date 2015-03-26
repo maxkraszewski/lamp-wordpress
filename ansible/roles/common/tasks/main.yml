@@ -1,0 +1,14 @@
+---
+- name: copy .bash_aliases
+  copy: src=.bash_aliases
+        dest=/{{ ssh_home }}/.bash_aliases
+        owner={{ ssh_user }}
+        group={{ ssh_group }}
+        mode=0644
+
+- name: install system packages
+  apt: pkg={{ item }} state=latest
+  with_items:
+    - curl
+    - htop
+    - vim

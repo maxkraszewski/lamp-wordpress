@@ -1,0 +1,6 @@
+---
+wordpress_db_name: 'wordpress'
+wordpress_db_user: 'dbuser'
+wordpress_db_pass: 'dbpass'
+wordpress_db_host: 'localhost'
+wordpress_debug: false

@@ -1,0 +1,80 @@
+---
+- name: Check for newrelic_license_key
+  fail:
+    msg: "newrelic_license_key has not been defined"
+  when: newrelic_license_key|default(False) == False
+
+- name: Check for newrelic_appname
+  fail:
+    msg: "newrelic_appname has not been defined"
+  when: newrelic_appname|default(False) == False
+
+- name: Add New Relic repo key
+  apt_key:
+    url: https://download.newrelic.com/548C16BF.gpg
+    id: 548C16BF
+    state: present
+
+- name: Add New Relic repository
+  copy:
+    content: "deb http://apt.newrelic.com/debian/ newrelic non-free"
+    dest: /etc/apt/sources.list.d/newrelic.list
+    owner: root
+    group: root
+    mode: 0644
+  register: newrelic_repo
+
+- name: apt-get update
+  apt:
+    update_cache: yes
+  when: newrelic_repo.changed
+
+- name: Install New Relic Sysmond
+  apt:
+    pkg: newrelic-sysmond
+    update_cache: yes
+    cache_valid_time: 86400
+    state: latest
+  notify:
+    - Restart New Relic
+
+- name: Configure New Relic Sysmond
+  template:
+    src: nrsysmond.cfg.j2
+    dest: /etc/newrelic/nrsysmond.cfg
+    group: newrelic
+    owner: root
+    mode: 0640
+
+- name: Install New Relic PHP Agent
+  apt:
+    pkg: newrelic-php5
+    state: latest
+  notify:
+    - Run New Relic installer
+
+- name: Configure New Relic PHP Agent
+  template:
+    src: newrelic.ini.j2
+    dest: /etc/php5/mods-available/newrelic.ini
+    group: root
+    owner: root
+    mode: 0640
+
+- name: Enable New Relic PHP Agent
+  command: php5enmod newrelic
+  notify:
+    - Restart New Relic
+    - Restart Apache
+
+- name: Ensure New Relic Sysmond is started and enabled
+  service:
+    name: newrelic-sysmond
+    state: started
+    enabled: yes
+
+- name: Ensure New Relic Daemon is started and enabled
+  service:
+    name: newrelic-daemon
+    state: started
+    enabled: yes

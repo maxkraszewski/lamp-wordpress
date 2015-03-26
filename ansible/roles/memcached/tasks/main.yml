@@ -1,0 +1,20 @@
+---
+- name: install memcached and its modules
+  apt: pkg={{ item }} state=present
+  with_items:
+    - memcached
+    - php5-memcache
+    - php5-memcached
+
+- name: copy memcached configuration
+  template:
+    src: memcached.conf.j2
+    dest: /etc/memcached.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart memcached
+  notify: restart apache
+
+- name: ensure memcached is started and set to run on startup.
+  service: name=memcached state=started enabled=yes

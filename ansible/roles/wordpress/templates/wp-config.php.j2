@@ -1,0 +1,35 @@
+<?php
+define('DB_NAME', '{{ wordpress_db_name }}');
+define('DB_USER', '{{ wordpress_db_user }}');
+define('DB_PASSWORD', '{{ wordpress_db_pass }}');
+define('DB_HOST', '{{ wordpress_db_host }}');
+define('DB_CHARSET', 'utf8');
+define('DB_COLLATE', '');
+
+define('AUTH_KEY',         '-G6CkK.ud!%`$otK>kk?_;%OC^hWrIVHguc.<L*zmtRF mX8z-L<Ld5--IX1l$<8');
+define('SECURE_AUTH_KEY',  'W%I{*~K1,c#FJ6I,OxS]kxh`*PP&)Be+Pc%E2Q |_pCzlUv|41YL>MW5[yQc*6/R');
+define('LOGGED_IN_KEY',    'eMD3ck(&GX}LR|]-dD{,>?}>GF$+4J6GB8OEJ<Xl(q-m]#b[-+o-3;[mB?15&Q7u');
+define('NONCE_KEY',        'RB+q!{a4?|ogSAPk-=f^4p_zY/|Y|FIeA*qH>1jcC:(RP(h_CDojWo]Jqs!z_Ug~');
+define('AUTH_SALT',        'gD>+/ilZ^:4IG{Ed}{n]yq5c>h}f2>F@jir-h}9lW~3)/{EY,m.,0|E,4c&P=)`/');
+define('SECURE_AUTH_SALT', 'A`<v9=^Nr_O*b$|Vc]Xo#mD6EA*Oti#Uq*mc%dz[2._=yhN6K}p+zm Qa-%op9[A');
+define('LOGGED_IN_SALT',   'Q%7oHqYf5-/5dqG<@f&5K#{HcXJ2fHl4oDS#-[[n|&`*M/l[g}R6%fk-q+e{6pCT');
+define('NONCE_SALT',       '7H$Ey!)>h N4S+-L[NiwVm*I2TTj.~tVU_aPA^AZ#7YJZs=G%q+*fR|SD#$T~3J<');
+
+$table_prefix  = 'wp_';
+
+define('WP_DEBUG', {{ wordpress_debug }});
+
+/** Some fixes to do more faster **/
+define('WP_POST_REVISIONS', 3); // days to save post revisions
+define('AUTOSAVE_INTERVAL', 160 ); // 160 seconds
+define('EMPTY_TRASH_DAYS', 5 ); // 5 days
+define('WP_ALLOW_REPAIR', true); // allow repair db
+
+/* That's all, stop editing! Happy blogging. */
+
+/** Absolute path to the WordPress directory. */
+if ( !defined('ABSPATH') )
+  define('ABSPATH', dirname(__FILE__) . '/');
+
+/** Sets up WordPress vars and included files. */
+require_once(ABSPATH . 'wp-settings.php');
