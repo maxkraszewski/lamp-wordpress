@@ -21,3 +21,5 @@ Includes:
 2. Clone repository into a desired folder
 3. ```cd``` into repository folder
 4. Start the VM ```vagrant up```
+
+(work in progress)
