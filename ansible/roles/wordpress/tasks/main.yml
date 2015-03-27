@@ -1,0 +1,39 @@
+---
+- name: remove wp-config-sample
+  file:
+    path: "{{ apache_docroot }}/wp-config-sample.php"
+    state: absent
+
+- name: copy wp-config
+  template:
+    src: "wp-config.php.j2"
+    dest: "{{ apache_docroot }}/wp-config.php"
+
+- name: setup empty database for WordPress
+  mysql_db:
+    db: "{{ wordpress_db_name }}"
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    state: present
+
+- name: setup wordpress database user
+  mysql_user:
+    name: "{{ wordpress_db_user }}"
+    password: "{{ wordpress_db_pass }}"
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    priv: "{{ wordpress_db_name }}.*:SELECT,INSERT,UPDATE,DELETE,CREATE"
+    host: "{{ wordpress_db_host }}"
+    state: "present"
+
+- name: grant access for root to wordpress database
+  mysql_user:
+    name: root
+    password: "{{ mysql_root_password }}"
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    append_privs: yes
+    priv: "{{ wordpress_db_name }}.*:ALL"
+    state: present
+
+

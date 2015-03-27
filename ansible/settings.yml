@@ -1,0 +1,21 @@
+---
+domain_name: 'wordpress.local'
+
+# SSH
+ssh_home: '/home/vagrant'
+ssh_user: 'vagrant'
+ssh_group: 'vagrant'
+
+# Apache
+apache_port: '80'
+apache_env: 'dev'
+apache_serverip: '192.168.100.101'
+apache_servername: 'wordpress.local'
+apache_serveralias: 'wordpress.local www.wordpress.local'
+
+# MySQL
+mysql_root_password: "rootpass"
+
+# WordPress
+wordpress_db_name: 'wordpress'
+wordpress_debug: false

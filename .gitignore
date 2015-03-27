@@ -1,0 +1,16 @@
+# ============
+# OS files
+# ============
+.htaccess
+.DS_Store
+.Trashes
+.project
+.buildpath
+*.log
+
+# ============
+# APP files
+# ============
+.vagrant/
+data/wp-config.php
+data/wp-content/plugins/*
