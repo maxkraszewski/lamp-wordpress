@@ -4,30 +4,57 @@
   with_items:
     - apache2
     - libapache2-mod-php5
+  tags: apache
 
 - name: write apache2.conf
   template: src=apache2.conf.j2 dest=/etc/apache2/apache2.conf
   notify: restart apache
+  tags: apache
 
 - name: write envvars
   template: src=envvars.j2 dest=/etc/apache2/envvars
   notify: restart apache
+  tags: apache
 
 - name: write ports.conf
   template: src=ports.conf.j2 dest=/etc/apache2/ports.conf
   notify: restart apache
+  tags: apache
 
 - name: activate modules
   apache2_module: name={{ item }} state=present
   with_items:
   - rewrite
-  - env
-
+  tags: apache
 
 - name: disable the default site
   file: path=/etc/apache2/sites-enabled/000-default.conf state=absent
   notify: restart apache
+  tags: apache
 
 - name: delete default dir
   file: path=/var/www/html state=absent
   notify: restart apache
+  tags: apache
+
+- name: copy vhosts to nginx sites-available
+  template:
+    src: '{{ item }}.j2'
+    dest: '/etc/apache2/sites-available/{{ item }}'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+  with_items:
+    - wordpress
+  notify: restart apache
+  tags: apache
+
+- name: enable vhosts
+  file:
+    src: '/etc/apache2/sites-available/{{ item }}'
+    dest: '/etc/apache2/sites-enabled/{{ item }}'
+    state: link
+  with_items:
+    - wordpress
+  notify: restart apache
+  tags: apache

@@ -1,7 +1,7 @@
 ---
 - name: install mysql and dependencies
   apt:
-    name: "{{ item }}"
+    name: '{{ item }}'
     update_cache: yes
     cache_valid_time: 3600
     state: present
@@ -9,19 +9,27 @@
   - mysql-server
   - mysql-client
   - python-mysqldb
-  notify: start mysql
 
+- name: ensure mysql is running and starts on boot
+  service: name=mysql state=started enabled=true
+
+# Need to do this for idempotency, see
+# http://ansible.cc/docs/modules.html#mysql-user
 - name: update mysql root password for all root accounts
   mysql_user:
-    user: root
-    password: "{{ mysql_root_password }}"
-    login_user: root
-    login_password: "{{ mysql_root_password }}"
-    host: "{{ item }}"
-    check_implicit_admin: yes
-    priv: "*.*:ALL,GRANT"
+    user: 'root'
+    password: '{{ mysql.rootpass }}'
+    host: '{{ item }}'
   with_items:
-  - "{{ ansible_hostname }}"
-  - localhost
-  - 127.0.0.1
-  - ::1
+  - '{{ ansible_hostname }}'
+  - '127.0.0.1'
+  - '::1'
+  - 'localhost'
+
+- name: setup mysql credentials for root user
+  template:
+    src: 'my.cnf.j2'
+    dest: '/root/.my.cnf'
+    owner: 'root'
+    mode: 0600
+

@@ -12,5 +12,3 @@
 # APP files
 # ============
 .vagrant/
-data/wp-config.php
-data/wp-content/plugins/*

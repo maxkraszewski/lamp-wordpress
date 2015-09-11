@@ -9,7 +9,7 @@ User ${APACHE_RUN_USER}
 Group ${APACHE_RUN_GROUP}
 HostnameLookups Off
 ErrorLog ${APACHE_LOG_DIR}/error.log
-LogLevel {{ apache_loglevel }}
+LogLevel crit
 IncludeOptional mods-enabled/*.load
 IncludeOptional mods-enabled/*.conf
 Include ports.conf
@@ -58,11 +58,3 @@ IncludeOptional sites-enabled/*.conf
   php_flag engine off
   php_admin_value engine Off
 </DirectoryMatch>
-
-<VirtualHost *:{{ apache_port }}>
-  ServerAdmin {{ apache_serveadmin }}
-  DocumentRoot {{ apache_docroot }}
-  Servername {{ apache_serverip }}
-  ServerAlias {{ apache_serveralias }}
-  SetEnv APP_ENV {{ apache_env }}
-</VirtualHost>
