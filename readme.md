@@ -1,15 +1,15 @@
-# LAMP Vagrant Ansible Wordpress
+# LAMP Wordpress
 
 Create a local environment for quickly test Wordpress websites.
 
 Includes:
 - Ubuntu 14.04 Trusty
-- Apache 2
-- PHP 5.5
-- MySQL 5.6
-- Memcached 1.4
-- Varnish
-- Wordpress 4.1.1
+- Apache2
+- PHP 5.6
+- MySQL 5.5
+- Wordpress (latest)
+
+> If you want use nginx instead of Apache, you might check this repository: https://github.com/minimalart/lemp-wordpress
 
 ## Requirements
 - [Virtualbox](https://www.virtualbox.org/wiki/Downloads)
@@ -18,8 +18,39 @@ Includes:
 
 ## Installation
 1. Install Virtualbox, Vagrant and Ansible
-2. Clone repository into a desired folder
-3. ```cd``` into repository folder
-4. Start the VM ```vagrant up```
+2. Install [Vagrant::Hostupdater](https://github.com/cogitatio/vagrant-hostsupdater) plugin
+```
+$ vagrant plugin install vagrant-hostsupdater
+```
 
-(work in progress)
+3. Clone repository into a desired folder
+```
+$ git clone https://github.com/minimalart/lamp-wordpress.git
+```
+
+4. Move to repository folder
+```
+$ cd lamp-wordpress
+```
+You will ask for your machine admin password to update host file.
+
+5. (Optional) Customize local ip
+
+  If you use the default box, no configuration should be required to get up and running.
+  However if you want to use an IP address other than ```192.168.100.102```, replace that address with the one you wish to use in `Vagrantfile (line 8)`
+
+6. Run the commands below:
+  ```
+  $ vagrant up
+  ```
+  The setup will take some time to finish. In the meantime, you can have a [sword fight](http://xkcd.com/303/).
+
+7. Browse to [http://lamp-wordpress.local](http://lamp-wordpress.local) and enjoy.
+8. You can login to the WP Admin Panel in [http://lamp-wordpress.local/wp-admin](http://lamp-wordpress.local/wp-admin) with user: `wpadmin` and password: `wppass`
+
+---
+#### Tips and Hints:
+
+* All users and passwords for accesing WP Admin Panel are located in ***ansible/settings.yml*** file.
+* You can `ssh` into the VM with `vagrant ssh` command, with no password.
+* ***WP-CLI*** is installed, so you can run `wp` commands as described in [http://wp-cli.org/](http://wp-cli.org/)
